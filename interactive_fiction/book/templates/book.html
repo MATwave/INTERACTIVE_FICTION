@@ -1,15 +1,19 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>{{ book.title }}</title>
-</head>
-<body>
-<h1>{{ book.title }}</h1>
-<ul>
-    {% for page in book.bookpage_set.all %}
-    <li><a href="{% url 'page' book.id page.id %}"> {{ page.title }}</li>
-    {% endfor %}
-</ul>
-</body>
-</html>
+<!-- templates/login.html -->
+{% extends 'base.html' %}
+
+{% block title %}{{ book.title }}{% endblock %}
+
+{% block content %}
+  <div class="card">
+    <div class="card-header">
+      <h1 class="card-title">{{ book.title }}</h1>
+    </div>
+    <div class="card-body">
+      <ul class="list-group">
+        {% for page in book.bookpage_set.all %}
+        <li class="list-group-item"><a href="{% url 'page' book.id page.id %}">{{ page.title }}</a></li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+{% endblock %}

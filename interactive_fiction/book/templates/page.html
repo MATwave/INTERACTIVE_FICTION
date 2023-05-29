@@ -1,16 +1,21 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>{{ page.book.title }} {{ page.title }}</title>
+<!-- templates/home.html -->
+{% extends 'base.html' %}
 
-</head>
-<body>
-{{ page.body }}
-<ul>
-    {% for link in page.pagelink_set.all %}
-    <li><a href="{% url 'page' page.book.id link.to_page.id %}"> {{ link.name }}</li>
-    {% endfor %}
-</ul>
-</body>
-</html>
+{% block title %}{{ page.book.title }} {{ page.title }}{% endblock %}
+
+{% block content %}
+  <div class="container">
+    {{ page.book.title }}
+    <h2 class="text-center"> {{ page.title }}</h2>
+    <div class="card">
+      <div class="card-body text-center">
+        {{ page.body }}
+        <ul class="list-group">
+          {% for link in page.pagelink_set.all %}
+          <li class="list-group-item text-center"><a href="{% url 'page' page.book.id link.to_page.id %}">{{ link.name }}</a></li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+  </div>
+{% endblock %}
