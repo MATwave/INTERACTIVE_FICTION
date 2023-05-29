@@ -9,6 +9,7 @@ class Book(models.Model):
                                    null=True,
                                    on_delete=models.SET_NULL,
                                    related_name="first_page")  # Ссылка на первую страницу книги
+    cover_art = models.ImageField(upload_to='books_cover', null=True)
 
     def __str__(self):
         # Строковое представление модели Book
