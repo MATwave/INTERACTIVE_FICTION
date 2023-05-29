@@ -6,7 +6,6 @@ from .models import Book
 from .models import BookPage
 from .models import PageLink
 
-
 admin.site.register(Book)
 admin.site.register(BookPage)
 admin.site.register(PageLink)

@@ -9,12 +9,13 @@ from .models import Book
 from .models import BookPage
 
 
-# Create your views here.
 def index(request):
+    '''Отрисовка главной страницы'''
     return render(request, "book_index.html", context={"books": Book.objects.all()})
 
 
 def book(request, book_id):
+    '''Отрисовка книги'''
     b = get_object_or_404(Book, id=book_id)
     if not b.first_page:
         return render(request, "book.html", context={"book": b})
@@ -22,4 +23,5 @@ def book(request, book_id):
 
 
 def page(request, book_id, page_id):
+    '''Отрисовка страницы'''
     return render(request, "page.html", context={"page": get_object_or_404(BookPage, book__id=book_id, id=page_id)})
