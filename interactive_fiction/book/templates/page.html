@@ -4,45 +4,49 @@
 {% block title %}{{ page.book.title }} {{ page.title }}{% endblock %}
 
 {% block content %}
-  <div class="container">
+<div class="container">
     {{ page.book.title }}
     <h2 class="text-center"> {{ page.title }}</h2>
     <div class="card">
-      <div class="card-body text-center">
-        {{ page.body }}
-        {% if page_items %}
-        <h4>Вы видите:</h4>
-          {% for item in page_items %}
-          <li class="list-group-item text-center">
-            {{ item.name }} <a href="{% url 'take' page.book.id page.id item.id %}"> взять </a>
-          </li>
-          {% endfor %}
-        {% endif %}
-        {% if page.pagelink_set.all %}
-        <h4>Куда податься?</h4>
-        <ul class="list-group">
-          {% for link in page.pagelink_set.all %}
-          <li class="list-group-item text-center">
-            <a href="{% url 'page' page.book.id link.to_page.id %}">
-              {{ link.name }}
-            </a>
-          </li>
-          {% endfor %}
-        {% endif %}
-        </ul>
+        <div class="card-body text-center">
+            {{ page.body }}
+            {% if page_items %}
+            <h4>Вы видите:</h4>
+            {% for item in page_items %}
+            <li class="list-group-item text-center">
+                {{ item.name }} <a href="{% url 'take' page.book.id page.id item.id %}"> взять </a>
+            </li>
+            {% endfor %}
+            {% endif %}
+            {% if page.pagelink_set.all %}
+            <h4>Куда податься?</h4>
+            <ul class="list-group">
+                {% for link, passable in links %}
+                <li class="list-group-item text-center">
+                    {% if passable %}
+                    <a href="{% url 'page' page.book.id link.to_page.id %}">
+                        {{ link.name }}
+                    </a>
+                    {% else %}
+                    {{ link.name }}
+                    {% endif %}
+                </li>
+                {% endfor %}
+                {% endif %}
+            </ul>
 
-      </div>
+        </div>
 
     </div>
 
-  </div>
+</div>
 
 <div class="text-center" style="position: absolute; left: 0;">
     <h3>Инвентарь</h3>
     <ul class="list-group">
-      {% for item in items %}
-      <li class="list-group-item text-center">{{ item.name }}</li>
-      {% endfor %}
+        {% for item in items %}
+        <li class="list-group-item text-center">{{ item.name }}</li>
+        {% endfor %}
     </ul>
-  </div>
+</div>
 {% endblock %}

@@ -26,8 +26,12 @@ class BookPageAdmin(ItemAdminMixin, admin.ModelAdmin):
     list_display = ['title', 'book', 'display_items']
 
 
+class PageLinkAdmin(ItemAdminMixin, admin.ModelAdmin):
+    list_display = ['name', 'from_page', 'to_page', 'display_items']
+
+
 admin.site.register(Book)
 admin.site.register(BookPage, BookPageAdmin)
-admin.site.register(PageLink)
+admin.site.register(PageLink, PageLinkAdmin)
 admin.site.register(Item)
 admin.site.register(BookProgress, BookProgressAdmin)

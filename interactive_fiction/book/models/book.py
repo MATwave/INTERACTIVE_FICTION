@@ -23,7 +23,7 @@ class BookPage(models.Model):
     title = models.TextField(name="title")  # Заголовок страницы
     book = models.ForeignKey(Book, on_delete=models.CASCADE)  # Ссылка на книгу, к которой относится страница
     body = models.TextField(name="body")  # Содержимое страницы
-    items = models.ManyToManyField(Item)
+    items = models.ManyToManyField(Item, blank=True)
 
     def __str__(self):
         # Строковое представление модели BookPage
@@ -34,7 +34,7 @@ class BookProgress(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     book = models.ForeignKey(Book, on_delete=models.CASCADE)  # Ссылка на книгу, к которой относится страница
     book_page = models.ForeignKey(BookPage, on_delete=models.CASCADE)
-    items = models.ManyToManyField(Item)
+    items = models.ManyToManyField(Item, blank=True)
 
     class Meta:
         unique_together = ['user', 'book']

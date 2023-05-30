@@ -41,11 +41,18 @@ def page(request, book_id, page_id):
     page = get_object_or_404(BookPage, book__id=book_id, id=page_id)
     progress.save_progress(page_id=page)
 
+    links = [
+        (link, link.has_all_required(list(progress.items.all()))) for link in page.pagelink_set.all()
+    ]
+    print(links)
+
     return render(request,
                   "page.html",
                   context={"page": get_object_or_404(BookPage, book__id=book_id, id=page_id),
                            "items": progress.items.all(),
-                           "page_items": page.items.exclude(id__in=progress.items.only('id'))})
+                           "page_items": page.items.exclude(id__in=progress.items.only('id')),
+                           "links": links
+                           })
 
 
 @login_required
