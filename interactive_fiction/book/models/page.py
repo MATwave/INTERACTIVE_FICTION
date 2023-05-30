@@ -1,7 +1,8 @@
 from __future__ import annotations
 
-from book import BookPage
 from django.db import models
+
+from .book import BookPage
 
 
 class PageLink(models.Model):
