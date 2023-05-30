@@ -10,13 +10,13 @@
     <div class="card">
       <div class="card-body text-center">
         {{ page.body }}
-        {% if page.items.count > 0 %}
+        {% if page.items.all %}
         <h4>Вы видите:</h4>
           {% for item in page.items.all %}
           <li class="list-group-item text-center">{{ item.name }}</li>
           {% endfor %}
         {% endif %}
-        {% if page.pagelink_set.count > 0 %}
+        {% if page.pagelink_set.all %}
         <h4>Куда податься?</h4>
         <ul class="list-group">
           {% for link in page.pagelink_set.all %}
