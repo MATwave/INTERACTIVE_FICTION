@@ -9,6 +9,7 @@ from django.urls import reverse
 from .models.book import Book
 from .models.book import BookPage
 from .models.book import BookProgress
+from .models.item import Item
 
 
 def index(request):
@@ -43,4 +44,18 @@ def page(request, book_id, page_id):
     return render(request,
                   "page.html",
                   context={"page": get_object_or_404(BookPage, book__id=book_id, id=page_id),
-                           "items": progress.items.all()})
+                           "items": progress.items.all(),
+                           "page_items": page.items.exclude(id__in=progress.items.only('id'))})
+
+
+@login_required
+def take(request, book_id, page_id, item_id):
+    progress = BookProgress.reading_progress(user=request.user, book=book_id)
+    if progress is None:
+        return redirect(reverse("book", kwargs={"book_id": book_id}))
+
+    item = get_object_or_404(Item, id=item_id)
+    progress.items.add(item)
+
+    return redirect(reverse('page', kwargs={'book_id': book_id,
+                                            'page_id': page_id}))
