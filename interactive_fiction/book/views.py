@@ -6,8 +6,8 @@ from django.shortcuts import redirect
 from django.shortcuts import render
 from django.urls import reverse
 
-from .models import Book
-from .models import BookPage
+from .models.book import Book
+from .models.book import BookPage
 
 
 def index(request):
