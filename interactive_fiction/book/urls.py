@@ -1,16 +1,13 @@
-from __future__ import annotations
-
 from django.urls import path
 
-from .views import book
-from .views import index
-from .views import page
-from .views import take
+from .views import BookView
+from .views import IndexView
+from .views import PageView
+from .views import TakeView
 
 urlpatterns = [
-    path("", index),
-    path("book/<int:book_id>", book, name="book"),
-    path("book/<int:book_id>/page/<int:page_id>", page, name="page"),
-    path("book/<int:book_id>/page/<int:page_id>/take/<int:item_id>", take, name="take"),
-
+    path("", IndexView.as_view(), name="index"),
+    path("book/<int:book_id>", BookView.as_view(), name="book"),
+    path("book/<int:book_id>/page/<int:page_id>", PageView.as_view(), name="page"),
+    path("book/<int:book_id>/page/<int:page_id>/take/<int:item_id>", TakeView.as_view(), name="take"),
 ]
