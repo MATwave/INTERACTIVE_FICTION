@@ -18,20 +18,26 @@ class ItemAdminMixin:
     display_items.short_description = 'Items'
 
 
+@admin.register(BookProgress)
 class BookProgressAdmin(ItemAdminMixin, admin.ModelAdmin):
     list_display = ['user', 'book', 'book_page', 'display_items']
 
 
+@admin.register(BookPage)
 class BookPageAdmin(ItemAdminMixin, admin.ModelAdmin):
     list_display = ['title', 'book', 'display_items']
 
 
+@admin.register(PageLink)
 class PageLinkAdmin(ItemAdminMixin, admin.ModelAdmin):
     list_display = ['name', 'from_page', 'to_page', 'display_items']
 
 
-admin.site.register(Book)
-admin.site.register(BookPage, BookPageAdmin)
-admin.site.register(PageLink, PageLinkAdmin)
-admin.site.register(Item)
-admin.site.register(BookProgress, BookProgressAdmin)
+@admin.site.register(Book)
+class BookAdmin(admin.ModelAdmin):
+    list_display = ['title', 'first_page', 'cover_art']
+
+
+@admin.site.register(Item)
+class ItemAdmin(admin.ModelAdmin):
+    list_display = ['name']
