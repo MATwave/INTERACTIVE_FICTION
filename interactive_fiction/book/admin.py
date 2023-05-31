@@ -33,11 +33,11 @@ class PageLinkAdmin(ItemAdminMixin, admin.ModelAdmin):
     list_display = ['name', 'from_page', 'to_page', 'display_items']
 
 
-@admin.site.register(Book)
+@admin.register(Book)
 class BookAdmin(admin.ModelAdmin):
     list_display = ['title', 'first_page', 'cover_art']
 
 
-@admin.site.register(Item)
+@admin.register(Item)
 class ItemAdmin(admin.ModelAdmin):
     list_display = ['name']
