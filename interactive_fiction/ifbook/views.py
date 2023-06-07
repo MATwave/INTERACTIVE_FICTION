@@ -1,14 +1,28 @@
+from django.contrib.auth import login
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import get_object_or_404
 from django.shortcuts import redirect
 from django.shortcuts import render
 from django.urls import reverse
 from django.views import View
+from django.views.generic import FormView
 
+from .forms.registration import RegistrationForm
 from .models.book import Book
 from .models.book import BookPage
 from .models.book import BookProgress
-from .models.item import Item
+from .models.item import BookItem
+
+
+class RegistrationView(FormView):
+    template_name = 'registration/registration.html'
+    form_class = RegistrationForm
+    success_url = '/'
+
+    def form_valid(self, form):
+        user = form.save()
+        login(self.request, user)
+        return super().form_valid(form)
 
 
 class IndexView(View):
@@ -22,7 +36,7 @@ class BookView(LoginRequiredMixin, View):
         '''Отрисовка книги'''
         b = get_object_or_404(Book, id=book_id)
         if not b.first_page:
-            return render(request, "book.html", context={"book": b})
+            return render(request, "ifbook.html", context={"ifbook": b})
 
         progress = BookProgress.reading_progress(user=request.user, book=b)
         if progress is None:
@@ -36,7 +50,7 @@ class PageView(LoginRequiredMixin, View):
         '''Отрисовка страницы'''
         progress = BookProgress.reading_progress(user=request.user, book=book_id)
         if progress is None:
-            return redirect(reverse("book", kwargs={"book_id": book_id}))
+            return redirect(reverse("ifbook", kwargs={"book_id": book_id}))
 
         page = get_object_or_404(BookPage, book__id=book_id, id=page_id)
         progress.save_progress(page_id=page)
@@ -59,9 +73,9 @@ class TakeView(LoginRequiredMixin, View):
     def get(self, request, book_id, page_id, item_id):
         progress = BookProgress.reading_progress(user=request.user, book=book_id)
         if progress is None:
-            return redirect(reverse("book", kwargs={"book_id": book_id}))
+            return redirect(reverse("ifbook", kwargs={"book_id": book_id}))
 
-        item = get_object_or_404(Item, id=item_id)
+        item = get_object_or_404(BookItem, id=item_id)
         progress.items.add(item)
 
         return redirect(reverse('page', kwargs={'book_id': book_id,

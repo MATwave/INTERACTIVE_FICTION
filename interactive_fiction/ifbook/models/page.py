@@ -3,7 +3,7 @@ from __future__ import annotations
 from django.db import models
 
 from .book import BookPage
-from .item import Item
+from .item import BookItem
 
 
 class PageLink(models.Model):
@@ -14,7 +14,7 @@ class PageLink(models.Model):
                                 related_name="to_page",
                                 on_delete=models.CASCADE)  # Ссылка на целевую страницу
 
-    items = models.ManyToManyField(Item, blank=True)  # требуемые предметы для перехода по ссылке
+    items = models.ManyToManyField(BookItem, blank=True)  # требуемые предметы для перехода по ссылке
 
     class Meta:
         # Уникальность комбинации исходной и целевой страницы для модели PageLink

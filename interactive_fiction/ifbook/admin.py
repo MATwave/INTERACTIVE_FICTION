@@ -5,7 +5,7 @@ from django.contrib import admin
 from .models.book import Book
 from .models.book import BookPage
 from .models.book import BookProgress
-from .models.item import Item
+from .models.item import BookItem
 from .models.page import PageLink
 
 
@@ -38,6 +38,6 @@ class BookAdmin(admin.ModelAdmin):
     list_display = ['title', 'first_page', 'cover_art']
 
 
-@admin.register(Item)
+@admin.register(BookItem)
 class ItemAdmin(admin.ModelAdmin):
     list_display = ['name']

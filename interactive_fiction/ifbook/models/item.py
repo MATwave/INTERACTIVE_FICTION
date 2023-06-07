@@ -1,9 +1,7 @@
-from __future__ import annotations
-
 from django.db import models
 
 
-class Item(models.Model):
+class BookItem(models.Model):
     name = models.TextField()
 
     def __str__(self):

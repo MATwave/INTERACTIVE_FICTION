@@ -3,30 +3,29 @@ from __future__ import annotations
 from django.contrib.auth.models import User
 from django.db import models
 
-from .item import Item
+from .item import BookItem
 
 
 class Book(models.Model):
-    title = models.TextField(name="title", unique=True)  # Заголовок книги
+    title = models.TextField(name="title", unique=True)
     first_page = models.ForeignKey("BookPage",
                                    null=True,
+                                   blank=True,
                                    on_delete=models.SET_NULL,
                                    related_name="first_page")  # Ссылка на первую страницу книги
     cover_art = models.ImageField(upload_to='books_cover', null=True)
 
     def __str__(self):
-        # Строковое представление модели Book
         return f"{self.title} ({self.id})"
 
 
 class BookPage(models.Model):
-    title = models.TextField(name="title")  # Заголовок страницы
-    book = models.ForeignKey(Book, on_delete=models.CASCADE)  # Ссылка на книгу, к которой относится страница
-    body = models.TextField(name="body")  # Содержимое страницы
-    items = models.ManyToManyField(Item, blank=True)
+    title = models.TextField(name="title")
+    book = models.ForeignKey(Book, null=True, blank=True, on_delete=models.CASCADE)
+    body = models.TextField(name="body")
+    items = models.ManyToManyField(BookItem, blank=True)
 
     def __str__(self):
-        # Строковое представление модели BookPage
         return f"{self.title} ({self.id})"
 
 
@@ -34,7 +33,7 @@ class BookProgress(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     book = models.ForeignKey(Book, on_delete=models.CASCADE)  # Ссылка на книгу, к которой относится страница
     book_page = models.ForeignKey(BookPage, on_delete=models.CASCADE)
-    items = models.ManyToManyField(Item, blank=True)
+    items = models.ManyToManyField(BookItem, blank=True)
 
     class Meta:
         unique_together = ['user', 'book']

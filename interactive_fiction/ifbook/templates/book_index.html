@@ -1,0 +1,55 @@
+<!-- templates/home.html -->
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<div class="container text-center">
+    {% if not user.is_authenticated %}
+    <script>
+    Swal.fire({
+        icon: 'info',
+        title: 'Вы не авторизированы!',
+        text: 'Вы можете видеть список доступных книг, но не играть в них',
+        confirmButtonText: 'Войти',
+        showCancelButton: true,
+        cancelButtonText: 'Отмена',
+        cancelButtonColor: '#d33',
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+        showDenyButton: true,
+        denyButtonText: 'Регистрация',
+        denyButtonColor: '#00A36C',
+    }).then((result) => {
+        if (result.isConfirmed) {
+            window.location.href = "{% url 'login' %}";
+        } else if (result.isDenied) {
+            window.location.href = "{% url 'registration' %}";
+        }
+    });
+
+    </script>
+
+    {% else %}
+    <h2>Привет, {{ user.username }}!</h2>
+    {% if not books %}
+    <h3>На данный момент нет доступных книг</h3>
+    {% else %}
+    <h3>На данный момент кол-во доступных книг: {{ books|length }}</h3>
+    {% endif %}
+    {% endif %}
+    <ul class="list-group">
+        {% for book in books %}
+        <li class="list-group-item">
+            <a href="book/{{ book.id }}">{{ book.title }}
+                {% if book.cover_art %}
+                <br>
+                <img src="{{ book.cover_art.url }}" class="img-fluid">
+                {% endif %}</a>
+        </li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}
