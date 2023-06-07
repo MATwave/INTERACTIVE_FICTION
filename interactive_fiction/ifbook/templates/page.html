@@ -15,7 +15,8 @@
             <h4>Вы видите:</h4>
             {% for item in page_items %}
             <li class="list-group-item text-center">
-                {{ item.name }} <a href="{% url 'take' page.book.id page.id item.id %}" onclick="showSuccessMessage(event, '{{ item.name }}')"> взять </a>
+                {{ item.name }} <a href="{% url 'take' page.book.id page.id item.id %}"
+                                   onclick="showSuccessMessage(event, '{{ item.name }}')"> взять </a>
             </li>
             {% endfor %}
             {% endif %}
@@ -45,15 +46,16 @@
 
 <div class="text-center" style="position: absolute; left: 0;">
     <div class="dropdown">
-  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-    Инвентарь
-  </button>
-  <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-    {% for item in items %}
-    <li><a class="dropdown-item" href="#">{{ item.name }}</a></li>
-    {% endfor %}
-  </ul>
-</div>
+        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
+                data-bs-toggle="dropdown" aria-expanded="false">
+            Инвентарь
+        </button>
+        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            {% for item in items %}
+            <li><a class="dropdown-item" href="#">{{ item.name }}</a></li>
+            {% endfor %}
+        </ul>
+    </div>
 
 </div>
 
@@ -71,6 +73,7 @@
             window.location.href = event.target.href;
         });
     }
+
 </script>
 
 {% endblock %}

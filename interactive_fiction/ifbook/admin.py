@@ -1,10 +1,10 @@
 from django.contrib import admin
 
 from .models.book import Book
-from .models.book import BookPage
-from .models.book import BookProgress
 from .models.item import BookItem
-from .models.page import PageLink
+from .models.page import BookPage
+from .models.page_link import PageLink
+from .models.progress import BookProgress
 
 
 class ItemAdminMixin:
