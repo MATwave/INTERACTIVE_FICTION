@@ -33,7 +33,7 @@ class PageLinkAdmin(ItemAdminMixin, admin.ModelAdmin):
 
 @admin.register(Book)
 class BookAdmin(admin.ModelAdmin):
-    list_display = ['title', 'first_page', 'cover_art']
+    list_display = ['title', 'first_page', 'cover_art', 'description']
 
 
 @admin.register(BookItem)

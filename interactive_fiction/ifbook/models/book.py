@@ -9,6 +9,7 @@ FIRST_PAGE_BODY = "Это автоматически созданная перв
 
 class Book(models.Model):
     title = models.TextField(name="title", unique=True)
+    description = models.TextField(name='description', null=True)
     first_page = models.ForeignKey("BookPage",
                                    null=True,
                                    blank=True,
