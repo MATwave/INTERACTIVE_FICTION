@@ -6,6 +6,7 @@ from django.shortcuts import render
 from django.urls import reverse
 from django.views import View
 from django.views.generic import FormView
+from django.views.generic import ListView
 
 from .forms.registration import RegistrationForm
 from .models.book import Book
@@ -25,24 +26,26 @@ class RegistrationView(FormView):
         return super().form_valid(form)
 
 
-class IndexView(View):
-    def get(self, request):
-        '''Отрисовка главной страницы'''
-        return render(request, "book_index.html", context={"books": Book.objects.all()})
+class IndexView(ListView):
+    model = Book
+    context_object_name = 'books'
+    template_name = 'book_index.html'
 
 
 class BookView(LoginRequiredMixin, View):
     def get(self, request, book_id):
         '''Отрисовка книги'''
-        b = get_object_or_404(Book, id=book_id)
-        if not b.first_page:
-            return render(request, "book.html", context={"book": b})
 
-        progress = BookProgress.reading_progress(user=request.user, book=b)
+        book = get_object_or_404(Book, id=book_id)
+        if not book.first_page:
+            return render(request, "book.html", context={"book": book})
+
+        progress = BookProgress.reading_progress(user=request.user, book=book)
         if progress is None:
-            progress = BookProgress.start_reading(user=request.user, book=b)
+            progress = BookProgress.start_reading(user=request.user, book=book)
 
-        return redirect(reverse("page", kwargs={"book_id": b.id, "page_id": progress.book_page.id}))
+        return redirect(reverse("page", kwargs={"book_id": book.id,
+                                                "page_id": progress.book_page.id}))
 
 
 class PageView(LoginRequiredMixin, View):
