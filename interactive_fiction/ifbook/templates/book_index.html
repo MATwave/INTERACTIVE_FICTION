@@ -8,49 +8,75 @@
 {% block content %}
 <div class="container text-center">
     {% if not user.is_authenticated %}
-    <script>
-    Swal.fire({
-        icon: 'info',
-        title: 'Вы не авторизированы!',
-        text: 'Вы можете видеть список доступных книг, но не играть в них',
-        confirmButtonText: 'Войти',
-        showCancelButton: true,
-        cancelButtonText: 'Отмена',
-        cancelButtonColor: '#d33',
-        allowOutsideClick: false,
-        allowEscapeKey: false,
-        showDenyButton: true,
-        denyButtonText: 'Регистрация',
-        denyButtonColor: '#00A36C',
-    }).then((result) => {
-        if (result.isConfirmed) {
-            window.location.href = "{% url 'login' %}";
-        } else if (result.isDenied) {
-            window.location.href = "{% url 'registration' %}";
-        }
-    });
+        <script>
+        Swal.fire({
+            icon: 'info',
+            title: 'Вы не авторизированы!',
+            text: 'Вы можете видеть список доступных книг, но не играть в них',
+            confirmButtonText: 'Войти',
+            showCancelButton: true,
+            cancelButtonText: 'Отмена',
+            cancelButtonColor: '#d33',
+            allowOutsideClick: false,
+            allowEscapeKey: false,
+            showDenyButton: true,
+            denyButtonText: 'Регистрация',
+            denyButtonColor: '#00A36C',
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = "{% url 'login' %}";
+            } else if (result.isDenied) {
+                window.location.href = "{% url 'registration' %}";
+            }
+        });
 
 
-    </script>
+        </script>
 
     {% else %}
-    <h2>Привет, {{ user.username }}!</h2>
-    {% if not books %}
-    <h3>На данный момент нет доступных книг</h3>
-    {% else %}
-    <h3>На данный момент кол-во доступных книг: {{ books|length }}</h3>
+
+        {% if not books %}
+        <h3>На данный момент нет доступных книг</h3>
+        {% else %}
+        <h3>На данный момент кол-во доступных книг: {{ books|length }}</h3>
+        {% endif %}
     {% endif %}
-    {% endif %}
-    <ul class="list-group">
-        {% for book in books %}
-        <li class="list-group-item">
-            <a href="book/{{ book.id }}">{{ book.title }}
-                {% if book.cover_art %}
-                <br>
-                <img src="{{ book.cover_art.url }}" class="img-fluid">
-                {% endif %}</a>
-        </li>
-        {% endfor %}
-    </ul>
+
+    <div id="bookCarousel" class="carousel slide" data-bs-ride="carousel">
+        <!-- Индикаторы слайдов -->
+        <ol class="carousel-indicators">
+            {% for book in books %}
+            <li data-bs-target="#bookCarousel" data-bs-slide-to="{{ forloop.counter0 }}" {% if forloop.first %}class="active"{% endif %}></li>
+            {% endfor %}
+        </ol>
+
+        <!-- Содержимое слайдов -->
+        <div class="carousel-inner">
+            {% for book in books %}
+            <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                <a href="book/{{ book.id }}">
+                    {% if book.cover_art %}
+                    <img src="{{ book.cover_art.url }}" class="d-block" style="width: 800px; height: 800px; object-fit: cover;">
+
+                    {% endif %}
+                    <div class="carousel-caption">
+                        <h5>{{ book.title }}</h5>
+                    </div>
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- Кнопки переключения слайдов -->
+        <a class="carousel-control-prev" href="#bookCarousel" role="button" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </a>
+        <a class="carousel-control-next" href="#bookCarousel" role="button" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </a>
+    </div>
+
 </div>
 {% endblock %}
