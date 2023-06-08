@@ -13,7 +13,7 @@ repos:
     hooks:
       - id: reorder-python-imports                              # Порядок импортов: сортировка и группировка
         args: [
-          --application-directories, '.:interactive_fiction',   # Директории, в которых происходит поиск импортов
+          --application-directories, '.',   # Директории, в которых происходит поиск импортов
           --py38-plus                                           # Поддержка новых возможностей Python 3.8+
         ]
 
