@@ -3,7 +3,6 @@ from ifbook.models.book import Book
 
 
 @pytest.mark.django_db
-@pytest.mark.django_temporary_media_root
 def test_book_creation(cover_image):
     # Создаем объект Book
     book = Book.objects.create(title='Test Book', cover_art=cover_image)
