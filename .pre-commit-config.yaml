@@ -2,45 +2,49 @@ repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.4.0
     hooks:
-      - id: check-yaml
-      - id: debug-statements
-      - id: end-of-file-fixer
-      - id: trailing-whitespace
-        exclude: ^tests/fixtures/
+      - id: check-yaml               # Проверка синтаксиса YAML-файлов
+      - id: debug-statements         # Поиск отладочных инструкций в коде
+      - id: end-of-file-fixer        # Добавление символа конца файла
+      - id: trailing-whitespace      # Поиск и удаление лишних пробелов в конце строк
+        exclude: ^tests/fixtures/    # Исключение папки tests/fixtures/ из проверки
+
   - repo: https://github.com/asottile/reorder-python-imports
     rev: v3.9.0
     hooks:
-      - id: reorder-python-imports
+      - id: reorder-python-imports                              # Порядок импортов: сортировка и группировка
         args: [
-          --application-directories, '.:src',
-          --py38-plus
+          --application-directories, '.:interactive_fiction',   # Директории, в которых происходит поиск импортов
+          --py38-plus                                           # Поддержка новых возможностей Python 3.8+
         ]
+
   - repo: https://github.com/asottile/pyupgrade
     rev: v3.4.0
     hooks:
-      - id: pyupgrade
-        args: [ --py38-plus ]
+      - id: pyupgrade                 # Автоматическое обновление кода до более новых версий Python
+        args: [ --py38-plus ]         # Поддержка новых возможностей Python 3.8+
+
   - repo: https://github.com/PyCQA/flake8
     rev: 6.0.0
     hooks:
-      - id: flake8
-        args: [ --max-line-length=120 ]
+      - id: flake8                      # Статический анализ кода с использованием Flake8
+        args: [ --max-line-length=120 ] # Максимальная длина строки: 120 символов
 
-  -   repo: local
-      hooks:
-      -   id: pytest
-          name: pytest
-          stages: [commit]
-          language: system
-          entry: pytest -s -v interactive_fiction/.
-          types: [python]
-          pass_filenames: false
-          always_run: true
-      -   id: pytest-cov
-          name: pytest-cov
-          stages: [push]
-          language: system
-          entry: pytest -v --cov=ethosu --cov-fail-under=0
-          types: [python]
-          pass_filenames: false
-          always_run: true
+  - repo: local
+    hooks:
+      - id: pytest                                # Запуск pytest для выполнения тестов
+        name: pytest
+        stages: [commit]                          # Выполнять перед коммитом
+        language: system
+        entry: pytest -s -v interactive_fiction/. # Команда для запуска pytest
+        types: [python]
+        pass_filenames: false
+        always_run: true
+
+      - id: pytest-cov                                    # Запуск pytest с покрытием кода
+        name: pytest-cov
+        stages: [push]                                    # Выполнять перед пушем
+        language: system
+        entry: pytest -v --cov=ethosu --cov-fail-under=0  # Команда для запуска pytest с покрытием
+        types: [python]
+        pass_filenames: false
+        always_run: true
