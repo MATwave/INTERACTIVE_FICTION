@@ -36,7 +36,7 @@ class BookView(LoginRequiredMixin, View):
         '''Отрисовка книги'''
         b = get_object_or_404(Book, id=book_id)
         if not b.first_page:
-            return render(request, "ifbook.html", context={"ifbook": b})
+            return render(request, "book.html", context={"book": b})
 
         progress = BookProgress.reading_progress(user=request.user, book=b)
         if progress is None:
@@ -50,7 +50,7 @@ class PageView(LoginRequiredMixin, View):
         '''Отрисовка страницы'''
         progress = BookProgress.reading_progress(user=request.user, book=book_id)
         if progress is None:
-            return redirect(reverse("ifbook", kwargs={"book_id": book_id}))
+            return redirect(reverse("book", kwargs={"book_id": book_id}))
 
         page = get_object_or_404(BookPage, book__id=book_id, id=page_id)
         progress.save_progress(page_id=page)
@@ -58,7 +58,6 @@ class PageView(LoginRequiredMixin, View):
         links = [
             (link, link.has_all_required(list(progress.items.all()))) for link in page.pagelink_set.all()
         ]
-        print(links)
 
         return render(request,
                       "page.html",
@@ -73,7 +72,7 @@ class TakeView(LoginRequiredMixin, View):
     def get(self, request, book_id, page_id, item_id):
         progress = BookProgress.reading_progress(user=request.user, book=book_id)
         if progress is None:
-            return redirect(reverse("ifbook", kwargs={"book_id": book_id}))
+            return redirect(reverse("book", kwargs={"book_id": book_id}))
 
         item = get_object_or_404(BookItem, id=item_id)
         progress.items.add(item)
